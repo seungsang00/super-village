@@ -1,0 +1,24 @@
+
+.listEntry{
+    display: flex;
+    flex-direction: row;
+}
+
+#checkBtn{
+    border-radius: 50px;
+    padding: 7px;
+    width: 10px;
+    height: 10px;
+}
+
+#contents{
+    padding: 10px;
+    margin-left: -10px;
+}
+
+#deleteBtn{
+    justify-content: space-between;
+    padding: 10px;
+    width: 15px;
+    height: 15px;
+}
