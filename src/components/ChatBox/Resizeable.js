@@ -20,10 +20,12 @@ export default function Resizeable({ children }) {
         y: currentSize.y + e.movementY 
       }));
     }
+
     function onMouseUp() {
       ref.current.removeEventListener("mousemove", onMouseMove);
       ref.current.removeEventListener("mouseup", onMouseUp);
     }
+    
     ref.current.addEventListener("mousemove", onMouseMove);
     ref.current.addEventListener("mouseup", onMouseUp);
   }, []);

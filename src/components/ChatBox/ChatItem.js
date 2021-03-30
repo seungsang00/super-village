@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 
-export default function ChatItem ({name, message}) {
+const ChatItem = ({username, message}) => {
   const newItem = useRef(null)
 
   const scrollToBottom = () => {
@@ -13,11 +13,10 @@ export default function ChatItem ({name, message}) {
 
   return (
     <div ref={newItem} className="ChatItemContainer">
-      {
-        message
-        ? name ?(<><span className="ChatName">{name} : </span><span className="ChatMsg">{message}</span></>) : <span className='ChatMsg'>{message}</span>
-        : ''
-      }
+      {username ? <span className="ChatName">{username} : </span> : '' }
+      {message ? <span className='ChatMsg'>{message}</span> : ''}
     </div>
   )
 }
+
+export default ChatItem

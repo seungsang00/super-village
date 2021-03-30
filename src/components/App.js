@@ -1,6 +1,9 @@
 import './App.css'
-import { useState, useRef } from 'react';
+import './App.scss';
+import { useState, useRef, useEffect} from 'react';
 import User from './User';
+import ChatBox from './ChatBox/ChatBox'
+import ChatTooltip from './ChatBox/ChatTooltip'
 /** 메모장
  * 방향키별 배경이미지 포지션 --done
  * left(37): [-5,0], right(39): [50, 60], up(38): [55, 10], down(40): [-5, 70]
@@ -19,17 +22,17 @@ import User from './User';
 const App = () => {
   const handleUserConnect = (users, myUser) => {
     const connected = users.filter((user) => {
+      console.log(user)
       return (
         Math.abs(user.position.x - myUser.position.x) < 100 &&
         Math.abs(user.position.y - myUser.position.y) < 100
       );
     });
-    users.map((user) => {
-      return connected.includes(user)
-        ? (user.isConnect = true)
-        : (user.isConnect = false);
+    users.forEach((user) => {
+      connected.includes(user) ?
+        (user.isConnect = true) :
+        (user.isConnect = false);
     });
-    console.log(`가까운 유저 목록`, connected);
   };
   const nextUserId = useRef(4);
   const myUserId = useRef(null);
@@ -74,7 +77,7 @@ const App = () => {
       isConnect: false,
     },
   });
-  window.onclick = () => {
+  window.onclick = () => { // add new user annoy & me
     const newUser = {
       id: nextUserId.current,
       username: `user${nextUserId.current}`,
@@ -97,9 +100,10 @@ const App = () => {
     nextUserId.current++;
   };
   const handleUserMoving = (user, keyCode) => {
-    // check user position
+    // check user position 
     const dxy = [-50, 50];
-    const newPos = (direction, idx, endPoint) => {
+    // 새 위치 조정
+    const newPos = (direction, idx, endPoint) => { // 방향(x,y) idx(0,1) , endpoint(x:0~840,y:0~540)
       if (endPoint === 0) {
         return user.position[direction] + dxy[idx] > endPoint
           ? user.position[direction] + dxy[idx]
@@ -110,7 +114,8 @@ const App = () => {
           : user.position[direction];
       }
     };
-    if (keyCode === 37) {
+    // 유저 이동 state 변경
+    if (keyCode === 37) { 
       // 왼쪽
       setUsers({
         ...users,
@@ -177,14 +182,60 @@ const App = () => {
     }
   };
   window.onkeydown = (e) => {
-    handleUserMoving(users[myUserId.current], e.keyCode);
-    handleUserConnect(Object.values(users), users[myUserId.current]);
+    if(myUserId.current) {
+      handleUserMoving(users[myUserId.current], e.keyCode);
+      handleUserConnect(Object.values(users), users[myUserId.current]);
+    }
   };
+ 
+  /*
+   * chatBox Logics
+   */
+  // chatbox visible boolean state (on user avatar)
+  const [isVisible, setIsVisible] = useState({state:false, timeOutID: null});
+
+  // chatbox handler ()
+  const handleGetMessage = (e) => {
+    if(myUserId.current) {
+      setUsers((state) => ({
+        ...state,
+        [myUserId.current]:{
+          ...state[myUserId.current],
+          message: e
+        }
+      }));
+
+      setIsVisible((state) => {
+      if(state.timeOutID) {
+        clearTimeout(state.timeOutID);
+      }
+      if(myUserId.current) {
+        return ({
+          ...state,
+          state: true,
+          timeOutID : setTimeout(() => {
+            setIsVisible({
+              state :false,
+              timeOutID: null,
+            })
+          }, 3000)
+        })
+      } else {
+        return state
+      }
+    });
+    }
+  }
+
   return (
     <div className="map">
       {Object.values(users).map((user) => (
-        <User user={user} key={user.id} isMe={user.id === myUserId.current} />
+        <>
+          { isVisible.state && user.id === myUserId.current ? <ChatTooltip user={user} /> : ''}
+          <User user={user} key={user.id} isMe={user.id === myUserId.current} />
+        </>
       ))}
+      {myUserId.current && <ChatBox user={users[myUserId.current]} onGetMessage={handleGetMessage} />}
     </div>
   );
 }

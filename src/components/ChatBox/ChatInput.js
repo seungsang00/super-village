@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect} from 'react'
 
 export default function ChatInput({onGetMessage}) {
-  const [userChat, setUserChat] = useState()
+  const [userChat, setUserChat] = useState('')
   const inputEl = useRef(null);
   
   const handleChange = (e) => {
