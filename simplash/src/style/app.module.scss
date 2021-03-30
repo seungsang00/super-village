@@ -1,0 +1,10 @@
+.appBody {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.appBody * {
+  box-sizing: border-box;
+}
