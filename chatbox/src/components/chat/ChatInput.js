@@ -11,7 +11,7 @@ export default function ChatInput({onGetMessage}) {
   const handleKeyDown = (e) => {
     if(e.key === "Enter") {
       onGetMessage(userChat)
-      inputEl.current.blur()
+      e.target.blur()
     }
   }
 

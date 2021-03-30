@@ -3,7 +3,7 @@ const cors = require('cors')
 
 const ip = 'localhost'
 
-const user = {};
+let users = [];
 
 const defaultCorsOptions = {
   origin: '*',
@@ -12,24 +12,33 @@ const defaultCorsOptions = {
   maxAge: 1000
 }
 
-const socket = require('socket.io')(server, defaultCorsOptions)
+const socket = require('socket.io')(server, cors(defaultCorsOptions))
 
 socket.on('connection', (client) => {
+
   client.on('message', (message) => { // 메시지
     socket.emit('message', message)
   })
 
-  client.on('login', (client) => {
-    user[client.name] = {
-      x: client.x,
-      y: client.y
-    }
-    socket.emit('checkUser', user)
+  client.on('login', (user) => { // 로그인
+    if (!user) return ;
+    users.push(user)
+    socket.emit('checkUser', users)
+  })
+
+  client.on('moveUser', (user) => { // 사용자 이동 이벤트
+    if (!user) return;
+    const leftUsers= users.filter(u => u.name !== user.name)
+    users = [
+      ...leftUsers,
+      user
+    ]
+    socket.emit('checkUser', users)
   })
 })
 
 server.use('/', cors(defaultCorsOptions))
 
-server.listen( 3000, ip,  () => {
+server.listen(433, ip,  () => {
   console.log('on Server')
 })

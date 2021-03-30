@@ -4,7 +4,7 @@ import ChatItem from '../components/chat/ChatItem'
 import Resizeable from './Resizeable'
 
 export default function ChatBox({ User, onGetMessage}) {
-  const [ Chatlist, setChatlist] = useState([{id :1, name: null, message : "채팅에 참여 하였습니다."}]);
+  const [ chatList, setChatlist] = useState([{id :1, name: null, message : "채팅에 참여 하였습니다."}]);
   
   const handleGetMessage = (e) =>  {
     setChatlist((list) => {
@@ -52,7 +52,7 @@ export default function ChatBox({ User, onGetMessage}) {
     <div className='ChatBoxContainer'>
       <div className="scroll" >
       {
-        Chatlist.map((ChatContent) => {
+        chatList.map((ChatContent) => {
           const { id, name, message } = ChatContent;
           return <ChatItem className='ChatItem' key={id} name={name} message={message} />
         })
