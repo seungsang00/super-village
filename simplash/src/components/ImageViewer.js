@@ -3,10 +3,6 @@ import style from '../style/ImageViewer.module.scss';
 import ImageItem from './ImageItem';
 
 class ImageViewer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <section className={style.viewer}>

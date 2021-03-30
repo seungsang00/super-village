@@ -2,9 +2,6 @@ import React from 'react';
 import style from '../style/searchHeader.module.scss';
 
 class SearchHeader extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
@@ -16,7 +13,7 @@ class SearchHeader extends React.Component {
           </p>
           <p>
             Powered by{' '}
-            <a href="https://unsplash.com" target="_blank">
+            <a href="https://unsplash.com" rel="noreferrer" target="_blank">
               Unsplah API
             </a>
           </p>

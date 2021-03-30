@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import '../user1.png';
+import '../../img/user1.png';
+
 
 const UserDiv = styled.div`
   /* 크기 */
