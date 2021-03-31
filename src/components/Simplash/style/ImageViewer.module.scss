@@ -1,0 +1,16 @@
+.viewer {
+  width: 100%;
+  max-width: 1300px;
+  column-width: 300px;
+}
+
+.viewItem {
+  display: block;
+  margin: 10;
+  padding: 5px;
+
+  & img {
+    width: 100%;
+    border-radius: 5px;
+  }
+}
