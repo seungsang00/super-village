@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './style/app.module.scss';
-import SearchHeader from './components/SeachHeader';
-import ImageViewer from './components/ImageViewer';
-import unsplashApi from './util/UnsplashApi';
+import SearchHeader from './SeachHeader';
+import ImageViewer from './ImageViewer';
+import unsplashApi from '../../utils/UnsplashApi'
 
 class App extends React.Component {
   constructor(props) {
@@ -81,3 +81,16 @@ class App extends React.Component {
 }
 
 export default App;
+
+
+/* index.html 스타일
+const body = document.querySelector('body');
+body.style.padding = 0;
+body.style.margin = 0;
+body.style.width = '100vw';
+body.style.height = '100vh';
+
+const root = document.getElementById('root');
+root.style.width = '100%';
+root.style.height = '100%';
+ */

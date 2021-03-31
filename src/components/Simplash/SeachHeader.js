@@ -1,5 +1,5 @@
 import React from 'react';
-import style from '../style/searchHeader.module.scss';
+import style from './style/searchHeader.module.scss';
 
 class SearchHeader extends React.Component {
 
