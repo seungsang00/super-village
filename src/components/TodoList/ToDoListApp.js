@@ -44,14 +44,14 @@ class ToDoListApp extends React.Component{
       contents : input,
       isChecked : false,
     }
-    this.setState({
+    this.setState(state => ({
       memoList : [
-        ...this.state.memoList,
+        ...state.memoList,
         {
           ...newMemo
         }
       ]
-    })
+    }))
     this.setState({
       value : ''
     })
@@ -79,7 +79,7 @@ class ToDoListApp extends React.Component{
   }
 
   render(){
-    localStorage
+
     return (
       <div className ="App">
         <div className ="todoListApp">
