@@ -3,7 +3,7 @@ First team project by unionX
 
 그냥 갑자기 생각나서 하는 미니 프로젝트 생각보다 스펙이 높아서 약간 걱정임
 <details>
-  <summary> HOW TO Start 🚀 </summary>
+  <summary> HOW TO Join Project 🚀 </summary>
   
   1. **Clone this repository (organization repo name is origin)**
   먼저 해당 레포지토리 주소를 클론해서 내 로컬에 놓는다.
@@ -58,6 +58,26 @@ First team project by unionX
   ```
 </details>
 
+# getting Start
+```sh
+$ git clone https://github.com/codeUnionX/super-village.git
+$ cd super-village
+$ npm i
+```
+## test
+```sh
+$ npm run start OR yarn start
+```
+
+
+# Developing
+## Built With
+ - react
+ - axios
+ - socket.io
+ - styled-components
+ - sass
+ - express
 
 
 
