@@ -22,7 +22,7 @@ const checkUserPosition = (user) => {
 };
 function User({ user, isMe }) {
   const { username, position, backgroundPos, isConnect } = user;
-  console.log(user)
+  // console.log(user)
   return (
     <UserDiv
       style={{

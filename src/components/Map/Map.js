@@ -22,7 +22,6 @@ import ChatTooltip from '../ChatBox/ChatTooltip'
 const Map = () => {
   const handleUserConnect = (users, myUser) => {
     const connected = users.filter((user) => {
-      console.log(user)
       return (
         Math.abs(user.position.x - myUser.position.x) < 100 &&
         Math.abs(user.position.y - myUser.position.y) < 100
@@ -192,7 +191,6 @@ const Map = () => {
    * chatBox Logics
    */
   // chatbox visible boolean state (on user avatar)
-  const [isVisible, setIsVisible] = useState({state:false, timeOutID: null});
 
   // chatbox handler ()
   const handleGetMessage = (e) => {
@@ -204,34 +202,14 @@ const Map = () => {
           message: e
         }
       }));
-
-      setIsVisible((state) => {
-      if(state.timeOutID) {
-        clearTimeout(state.timeOutID);
-      }
-      if(myUserId.current) {
-        return ({
-          ...state,
-          state: true,
-          timeOutID : setTimeout(() => {
-            setIsVisible({
-              state :false,
-              timeOutID: null,
-            })
-          }, 3000)
-        })
-      } else {
-        return state
-      }
-    });
-    }
+    } 
   }
 
   return (
     <div className="map">
       {Object.values(users).map((user) => (
         <>
-          { isVisible.state && user.id === myUserId.current ? <ChatTooltip user={user} /> : ''}
+          { user.id === myUserId.current ? <ChatTooltip user={user} /> : ''}
           <User user={user} key={user.id} isMe={user.id === myUserId.current} />
         </>
       ))}
