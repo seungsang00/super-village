@@ -1,9 +1,9 @@
-import './App.css'
+import './App.css';
 import './App.scss';
-import { useState, useRef, useEffect} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import User from '../User';
-import ChatBox from '../ChatBox/ChatBox'
-import ChatTooltip from '../ChatBox/ChatTooltip'
+import ChatBox from '../ChatBox/ChatBox';
+import ChatTooltip from '../ChatBox/ChatTooltip';
 /** 메모장
  * 방향키별 배경이미지 포지션 --done
  * left(37): [-5,0], right(39): [50, 60], up(38): [55, 10], down(40): [-5, 70]
@@ -28,9 +28,9 @@ const Map = () => {
       );
     });
     users.forEach((user) => {
-      connected.includes(user) ?
-        (user.isConnect = true) :
-        (user.isConnect = false);
+      connected.includes(user)
+        ? (user.isConnect = true)
+        : (user.isConnect = false);
     });
   };
   const nextUserId = useRef(4);
@@ -76,7 +76,8 @@ const Map = () => {
       isConnect: false,
     },
   });
-  window.onclick = () => { // add new user annoy & me
+  window.onclick = () => {
+    // add new user annoy & me
     const newUser = {
       id: nextUserId.current,
       username: `user${nextUserId.current}`,
@@ -99,10 +100,11 @@ const Map = () => {
     nextUserId.current++;
   };
   const handleUserMoving = (user, keyCode) => {
-    // check user position 
+    // check user position
     const dxy = [-50, 50];
     // 새 위치 조정
-    const newPos = (direction, idx, endPoint) => { // 방향(x,y) idx(0,1) , endpoint(x:0~840,y:0~540)
+    const newPos = (direction, idx, endPoint) => {
+      // 방향(x,y) idx(0,1) , endpoint(x:0~840,y:0~540)
       if (endPoint === 0) {
         return user.position[direction] + dxy[idx] > endPoint
           ? user.position[direction] + dxy[idx]
@@ -114,7 +116,7 @@ const Map = () => {
       }
     };
     // 유저 이동 state 변경
-    if (keyCode === 37) { 
+    if (keyCode === 37) {
       // 왼쪽
       setUsers({
         ...users,
@@ -181,12 +183,12 @@ const Map = () => {
     }
   };
   window.onkeydown = (e) => {
-    if(myUserId.current) {
+    if (myUserId.current) {
       handleUserMoving(users[myUserId.current], e.keyCode);
       handleUserConnect(Object.values(users), users[myUserId.current]);
     }
   };
- 
+
   /*
    * chatBox Logics
    */
@@ -194,28 +196,33 @@ const Map = () => {
 
   // chatbox handler ()
   const handleGetMessage = (e) => {
-    if(myUserId.current) {
+    if (myUserId.current) {
       setUsers((state) => ({
         ...state,
-        [myUserId.current]:{
+        [myUserId.current]: {
           ...state[myUserId.current],
-          message: e
-        }
+          message: e,
+        },
       }));
-    } 
-  }
+    }
+  };
 
   return (
     <div className="map">
       {Object.values(users).map((user) => (
         <>
-          { user.id === myUserId.current ? <ChatTooltip user={user} /> : ''}
+          {user.id === myUserId.current ? <ChatTooltip user={user} /> : ''}
           <User user={user} key={user.id} isMe={user.id === myUserId.current} />
         </>
       ))}
-      {myUserId.current && <ChatBox user={users[myUserId.current]} onGetMessage={handleGetMessage} />}
+      {myUserId.current && (
+        <ChatBox
+          user={users[myUserId.current]}
+          onGetMessage={handleGetMessage}
+        />
+      )}
     </div>
   );
-}
+};
 
 export default Map;

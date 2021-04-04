@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import '../../img/user1.png';
 
-
 const UserDiv = styled.div`
   /* 크기 */
   width: 60px;
@@ -35,7 +34,9 @@ function User({ user, isMe }) {
       }}
     >
       <span
-        style={{ color: `${isConnect ? `red` : isMe ? `red` : `#606060`}` }}
+        style={{
+          color: `${isConnect ? `red` : isMe ? `red` : `#606060`}`,
+        }}
       >
         {username}
       </span>
