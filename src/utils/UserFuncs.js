@@ -1,3 +1,10 @@
+/**
+ * @param {*} user 유저 객체 = myUser
+ * @param {*} direction 이동 방향(x 또는 y) 문자열
+ * @param {*} idx dxy 배열의 인덱스 값. 왼쪽/위쪽으로 이동 시 0, 오른쪽/아래쪽으로 이동 시 1
+ * @param {*} endPoint 유저가 더이상 이동할 수 없는 Map의 가장자리 좌표
+ * @returns user의 새로운 위치좌표
+ */
 const newPos = (user, direction, idx, endPoint) => {
   const dxy = [-50, 50];
   // 방향(x,y) idx(0,1) , endpoint(x:0~840,y:0~540)
@@ -12,10 +19,15 @@ const newPos = (user, direction, idx, endPoint) => {
   }
 };
 
+/**
+ * @param {*} myuserId Map 단에서 useRef로 가지고 있는 myUserId.current 값
+ * @param {*} user myUser 객체
+ * @param {*} keyCode 방향키 keyCode. 좌: 37, 우: 39, 상: 38, 하: 40
+ * @param {*} users 전체 유저 객체를 담은 배열 (state)
+ * @param {*} setUsers users 상태변경함수
+ */
 const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
-  // 유저 이동 state 변경
   if (keyCode === 37) {
-    // 왼쪽
     setUsers({
       ...users,
       [myuserId]: {
@@ -31,7 +43,6 @@ const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
       },
     });
   } else if (keyCode === 39) {
-    // 오른쪽
     setUsers({
       ...users,
       [myuserId]: {
@@ -47,7 +58,6 @@ const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
       },
     });
   } else if (keyCode === 38) {
-    // 위
     setUsers({
       ...users,
       [myuserId]: {
@@ -63,7 +73,6 @@ const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
       },
     });
   } else if (keyCode === 40) {
-    // 아래
     setUsers({
       ...users,
       [myuserId]: {
@@ -81,11 +90,11 @@ const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
   }
 };
 
-const handleUserConnect = (users, myUser) => {
+const handleUserConnect = (users, myUser, distance = 100) => {
   const connected = users.filter((user) => {
     return (
-      Math.abs(user.position.x - myUser.position.x) < 100 &&
-      Math.abs(user.position.y - myUser.position.y) < 100
+      Math.abs(user.position.x - myUser.position.x) < distance &&
+      Math.abs(user.position.y - myUser.position.y) < distance
     );
   });
   users.forEach((user) => {
