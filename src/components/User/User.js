@@ -24,6 +24,7 @@ function User({ user, isMe }) {
   // console.log(user)
   return (
     <UserDiv
+      id={isMe ? 'myuser' : null}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,

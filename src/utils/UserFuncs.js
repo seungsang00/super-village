@@ -25,6 +25,9 @@ const newPosition = (user, direction, distance, endPoint) => {
  * @param {*} setUsers users 상태변경함수
  */
 const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
+  const Map = document.querySelector('.map');
+  const mapArea = Map.getBoundingClientRect();
+
   const move = {
     37: {
       backgroundPos: { x: 50, y: 60 },
@@ -32,7 +35,10 @@ const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
     },
     39: {
       backgroundPos: { x: -5, y: 0 },
-      position: { x: newPosition(user, 'x', 50, 840), y: user.position.y },
+      position: {
+        x: newPosition(user, 'x', 50, mapArea.right - 60),
+        y: user.position.y,
+      },
     },
     38: {
       backgroundPos: { x: 55, y: 10 },
@@ -40,7 +46,10 @@ const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
     },
     40: {
       backgroundPos: { x: -5, y: 70 },
-      position: { x: user.position.x, y: newPosition(user, 'y', 50, 540) },
+      position: {
+        x: user.position.x,
+        y: newPosition(user, 'y', 50, mapArea.bottom - 60),
+      },
     },
   };
 
