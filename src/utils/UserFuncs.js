@@ -1,20 +1,18 @@
 /**
  * @param {*} user 유저 객체 = myUser
  * @param {*} direction 이동 방향(x 또는 y) 문자열
- * @param {*} idx dxy 배열의 인덱스 값. 왼쪽/위쪽으로 이동 시 0, 오른쪽/아래쪽으로 이동 시 1
+ * @param {*} distance 이동거리 ( left||up < 0 , right||down > 0 )
  * @param {*} endPoint 유저가 더이상 이동할 수 없는 Map의 가장자리 좌표
  * @returns user의 새로운 위치좌표
  */
-const newPos = (user, direction, idx, endPoint) => {
-  const dxy = [-50, 50];
-  // 방향(x,y) idx(0,1) , endpoint(x:0~840,y:0~540)
+const newPosition = (user, direction, distance, endPoint) => {
   if (endPoint === 0) {
-    return user.position[direction] + dxy[idx] > endPoint
-      ? user.position[direction] + dxy[idx]
+    return user.position[direction] + distance > endPoint
+      ? user.position[direction] + distance
       : user.position[direction];
   } else {
-    return user.position[direction] + dxy[idx] < endPoint
-      ? user.position[direction] + dxy[idx]
+    return user.position[direction] + distance < endPoint
+      ? user.position[direction] + distance
       : user.position[direction];
   }
 };
@@ -27,64 +25,32 @@ const newPos = (user, direction, idx, endPoint) => {
  * @param {*} setUsers users 상태변경함수
  */
 const handleUserMoving = (myuserId, user, keyCode, users, setUsers) => {
-  if (keyCode === 37) {
+  const move = {
+    37: {
+      backgroundPos: { x: 50, y: 60 },
+      position: { x: newPosition(user, 'x', -50, 0), y: user.position.y },
+    },
+    39: {
+      backgroundPos: { x: -5, y: 0 },
+      position: { x: newPosition(user, 'x', 50, 840), y: user.position.y },
+    },
+    38: {
+      backgroundPos: { x: 55, y: 10 },
+      position: { x: user.position.x, y: newPosition(user, 'y', -50, 0) },
+    },
+    40: {
+      backgroundPos: { x: -5, y: 70 },
+      position: { x: user.position.x, y: newPosition(user, 'y', 50, 540) },
+    },
+  };
+
+  if (keyCode === 37 || keyCode === 38 || keyCode === 39 || keyCode === 40) {
     setUsers({
       ...users,
       [myuserId]: {
         ...user,
-        position: {
-          x: newPos(user, 'x', 0, 0),
-          y: user.position.y,
-        },
-        backgroundPos: {
-          x: 50,
-          y: 60,
-        },
-      },
-    });
-  } else if (keyCode === 39) {
-    setUsers({
-      ...users,
-      [myuserId]: {
-        ...user,
-        position: {
-          x: newPos(user, 'x', 1, 840),
-          y: user.position.y,
-        },
-        backgroundPos: {
-          x: -5,
-          y: 0,
-        },
-      },
-    });
-  } else if (keyCode === 38) {
-    setUsers({
-      ...users,
-      [myuserId]: {
-        ...user,
-        position: {
-          x: user.position.x,
-          y: newPos(user, 'y', 0, 0),
-        },
-        backgroundPos: {
-          x: 55,
-          y: 10,
-        },
-      },
-    });
-  } else if (keyCode === 40) {
-    setUsers({
-      ...users,
-      [myuserId]: {
-        ...user,
-        position: {
-          x: user.position.x,
-          y: newPos(user, 'y', 1, 540),
-        },
-        backgroundPos: {
-          x: -5,
-          y: 70,
-        },
+        position: move[keyCode].position,
+        backgroundPos: move[keyCode].backgroundPos,
       },
     });
   }
@@ -104,10 +70,26 @@ const handleUserConnect = (users, myUser, distance = 100) => {
   });
 };
 
+const addNewUser = (id, username, users, setUsers) => {
+  // 새로운 유저 객체 생성
+  const newUser = {
+    id,
+    username,
+    position: { x: Math.random() * 500, y: Math.random() * 500 },
+    backgroundPos: { x: -5, y: 70 },
+    isConnect: false,
+  };
+  // users 상태에 추가
+  setUsers({
+    ...users,
+    [id]: newUser,
+  });
+};
+
 const userFuncs = {
-  newPos,
   handleUserMoving,
   handleUserConnect,
+  addNewUser,
 };
 
 export default userFuncs;
