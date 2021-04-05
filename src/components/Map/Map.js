@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import User from '../User';
 import ChatBox from '../ChatBox/ChatBox';
 import ChatTooltip from '../ChatBox/ChatTooltip';
+//
+import userFuncs from '../../utils/UserFuncs';
 /** 메모장
  * 방향키별 배경이미지 포지션 --done
  * left(37): [-5,0], right(39): [50, 60], up(38): [55, 10], down(40): [-5, 70]
@@ -20,19 +22,6 @@ import ChatTooltip from '../ChatBox/ChatTooltip';
  */
 
 const Map = () => {
-  const handleUserConnect = (users, myUser) => {
-    const connected = users.filter((user) => {
-      return (
-        Math.abs(user.position.x - myUser.position.x) < 100 &&
-        Math.abs(user.position.y - myUser.position.y) < 100
-      );
-    });
-    users.forEach((user) => {
-      connected.includes(user)
-        ? (user.isConnect = true)
-        : (user.isConnect = false);
-    });
-  };
   const nextUserId = useRef(4);
   const myUserId = useRef(null);
   const [users, setUsers] = useState({
@@ -99,93 +88,20 @@ const Map = () => {
     });
     nextUserId.current++;
   };
-  const handleUserMoving = (user, keyCode) => {
-    // check user position
-    const dxy = [-50, 50];
-    // 새 위치 조정
-    const newPos = (direction, idx, endPoint) => {
-      // 방향(x,y) idx(0,1) , endpoint(x:0~840,y:0~540)
-      if (endPoint === 0) {
-        return user.position[direction] + dxy[idx] > endPoint
-          ? user.position[direction] + dxy[idx]
-          : user.position[direction];
-      } else {
-        return user.position[direction] + dxy[idx] < endPoint
-          ? user.position[direction] + dxy[idx]
-          : user.position[direction];
-      }
-    };
-    // 유저 이동 state 변경
-    if (keyCode === 37) {
-      // 왼쪽
-      setUsers({
-        ...users,
-        [myUserId.current]: {
-          ...user,
-          position: {
-            x: newPos('x', 0, 0),
-            y: user.position.y,
-          },
-          backgroundPos: {
-            x: 50,
-            y: 60,
-          },
-        },
-      });
-    } else if (keyCode === 39) {
-      // 오른쪽
-      setUsers({
-        ...users,
-        [myUserId.current]: {
-          ...user,
-          position: {
-            x: newPos('x', 1, 840),
-            y: user.position.y,
-          },
-          backgroundPos: {
-            x: -5,
-            y: 0,
-          },
-        },
-      });
-    } else if (keyCode === 38) {
-      // 위
-      setUsers({
-        ...users,
-        [myUserId.current]: {
-          ...user,
-          position: {
-            x: user.position.x,
-            y: newPos('y', 0, 0),
-          },
-          backgroundPos: {
-            x: 55,
-            y: 10,
-          },
-        },
-      });
-    } else if (keyCode === 40) {
-      // 아래
-      setUsers({
-        ...users,
-        [myUserId.current]: {
-          ...user,
-          position: {
-            x: user.position.x,
-            y: newPos('y', 1, 540),
-          },
-          backgroundPos: {
-            x: -5,
-            y: 70,
-          },
-        },
-      });
-    }
-  };
+
   window.onkeydown = (e) => {
     if (myUserId.current) {
-      handleUserMoving(users[myUserId.current], e.keyCode);
-      handleUserConnect(Object.values(users), users[myUserId.current]);
+      userFuncs.handleUserMoving(
+        myUserId.current,
+        users[myUserId.current],
+        e.keyCode,
+        users,
+        setUsers
+      );
+      userFuncs.handleUserConnect(
+        Object.values(users),
+        users[myUserId.current]
+      );
     }
   };
 
